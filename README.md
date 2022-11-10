@@ -25,4 +25,5 @@ I want it to become the low-code version of figma with a smooth, buttery experie
 - [x] create a canvas
 - [x] webgl render rect
 - [ ] mousemove event
-  
+
+release size 222155

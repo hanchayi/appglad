@@ -12,8 +12,14 @@ rustc 1.64.0 (a55dd71d5 2022-09-19)
 [yew](https://yew.rs/zh-Hans/docs/getting-started/introduction)
 
 
-## Start
+## Running
 
 ``` bash
 trunk serve
+```
+
+## Release
+
+```
+trunk build --release
 ```
