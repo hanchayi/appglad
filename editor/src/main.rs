@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use web_sys::{HtmlCanvasElement, WebGlRenderingContext as GL};
+use web_sys::{HtmlCanvasElement, WebGlRenderingContext as GL, console};
 use gloo_render::{request_animation_frame, AnimationFrame};
 use wasm_bindgen::JsCast;
 use yew::html::Scope;
@@ -41,6 +41,7 @@ impl Component for Model {
                 false
             },
             Msg::AddOne => {
+                // console::log_0("sdf");
                 self.value += 1;
                 // the value has changed so we need to
                 // re-render for it to appear on the page
@@ -60,7 +61,7 @@ impl Component for Model {
          </div>
          */
         html! {
-            <canvas ref={self.node_ref.clone()} />
+            <canvas onclick={link.callback(|_| Msg::AddOne)} ref={self.node_ref.clone()} />
         }
     }
 
