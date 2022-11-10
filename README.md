@@ -20,9 +20,9 @@ I want it to become the low-code version of figma with a smooth, buttery experie
 ## Plan
 
 ### 2022-11-10
-- [ x ] create a new cargo app
-- [ x ] create a yew project for editor
-- [ x ] create a canvas
-- [ ] webgl render rect
+- [x] create a new cargo app
+- [x] create a yew project for editor
+- [x] create a canvas
+- [x] webgl render rect
 - [ ] mousemove event
   
