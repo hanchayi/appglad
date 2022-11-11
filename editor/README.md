@@ -23,3 +23,6 @@ trunk serve
 ```
 trunk build --release
 ```
+
+## Reference
+[wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/examples/console-log.html)

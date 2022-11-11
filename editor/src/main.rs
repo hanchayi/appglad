@@ -1,11 +1,12 @@
 use wasm_bindgen::prelude::wasm_bindgen;
 use yew::prelude::*;
-use web_sys::{HtmlCanvasElement, WebGlRenderingContext as GL, console};
+use web_sys::{HtmlCanvasElement, WebGlRenderingContext as GL};
 use gloo_render::{request_animation_frame, AnimationFrame};
 use wasm_bindgen::JsCast;
 use yew::html::Scope;
 use yew::{html, Component, Context, Html, NodeRef};
 
+mod console;
 enum Msg {
     AddOne,
     Render(f64),
@@ -43,7 +44,8 @@ impl Component for Model {
                 false
             },
             Msg::AddOne => {
-                console::log_1(&"add one".into());
+                console_warn!("add one");
+                console_error!("error");
                 self.value += 1;
                 // the value has changed so we need to
                 // re-render for it to appear on the page
@@ -88,7 +90,7 @@ impl Component for Model {
         // culling etc.
 
         if first_render {
-            console::log_1(&format!("first render {}", 1).into());
+            console_log!("first render {}", 1);
             // The callback to request animation frame is passed a time value which can be used for
             // rendering motion independent of the framerate which may vary.
             let handle = {
