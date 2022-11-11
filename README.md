@@ -16,6 +16,7 @@ I want it to become the low-code version of figma with a smooth, buttery experie
   - [ ] benchmark
   - [ ] collabrate
   - [ ] loacal file .ag for hole project
+  - [ ] simulator on web
 
 ## Plan
 
@@ -24,6 +25,10 @@ I want it to become the low-code version of figma with a smooth, buttery experie
 - [x] create a yew project for editor
 - [x] create a canvas
 - [x] webgl render rect
-- [ ] mousemove event
 
 release size 222155
+
+### 2022-11-11
+
+- [ ] console
+- [ ] mousemove event

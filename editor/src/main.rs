@@ -1,3 +1,4 @@
+use wasm_bindgen::prelude::wasm_bindgen;
 use yew::prelude::*;
 use web_sys::{HtmlCanvasElement, WebGlRenderingContext as GL, console};
 use gloo_render::{request_animation_frame, AnimationFrame};
@@ -8,6 +9,15 @@ use yew::{html, Component, Context, Html, NodeRef};
 enum Msg {
     AddOne,
     Render(f64),
+}
+
+#[wasm_bindgen]
+extern "C" {
+    // Use `js_namespace` here to bind `console.log(..)` instead of just
+    // `log(..)`
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+
 }
 
 struct Model {
@@ -86,12 +96,16 @@ impl Component for Model {
         // culling etc.
 
         if first_render {
+            log("first render");
             // The callback to request animation frame is passed a time value which can be used for
             // rendering motion independent of the framerate which may vary.
             let handle = {
                 let link = ctx.link().clone();
                 request_animation_frame(move |time| link.send_message(Msg::Render(time)))
             };
+
+            // mouse move handler
+
 
             // A reference to the handle must be stored, otherwise it is dropped and the render won't
             // occur.
