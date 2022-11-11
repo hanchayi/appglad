@@ -11,13 +11,6 @@ enum Msg {
     Render(f64),
 }
 
-#[wasm_bindgen]
-extern "C" {
-    // Use `js_namespace` here to bind `console.log(..)` instead of just
-    // `log(..)`
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
-}
 
 struct Model {
     gl: Option<GL>,
@@ -50,7 +43,7 @@ impl Component for Model {
                 false
             },
             Msg::AddOne => {
-                log("add one");
+                console::log_1(&"add one".into());
                 self.value += 1;
                 // the value has changed so we need to
                 // re-render for it to appear on the page
@@ -95,7 +88,7 @@ impl Component for Model {
         // culling etc.
 
         if first_render {
-            log("first render");
+            console::log_1(&format!("first render {}", 1).into());
             // The callback to request animation frame is passed a time value which can be used for
             // rendering motion independent of the framerate which may vary.
             let handle = {
