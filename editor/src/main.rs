@@ -17,7 +17,6 @@ extern "C" {
     // `log(..)`
     #[wasm_bindgen(js_namespace = console)]
     fn log(s: &str);
-
 }
 
 struct Model {
@@ -51,7 +50,7 @@ impl Component for Model {
                 false
             },
             Msg::AddOne => {
-                // console::log_0("sdf");
+                log("add one");
                 self.value += 1;
                 // the value has changed so we need to
                 // re-render for it to appear on the page
