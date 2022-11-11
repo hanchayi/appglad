@@ -10,7 +10,7 @@ rustc 1.64.0 (a55dd71d5 2022-09-19)
 ## Technology Stack
 
 [yew](https://yew.rs/zh-Hans/docs/getting-started/introduction)
-
+[wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/examples/console-log.html)
 
 ## Running
 
@@ -24,5 +24,4 @@ trunk serve
 trunk build --release
 ```
 
-## Reference
-[wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/examples/console-log.html)
+

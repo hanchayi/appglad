@@ -30,5 +30,6 @@ release size 222155
 
 ### 2022-11-11
 
-- [ ] console
-- [ ] mousemove event
+- [x] console
+- [x] mousemove event
+- [x] mousemove target
