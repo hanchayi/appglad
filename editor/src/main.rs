@@ -8,8 +8,9 @@ use yew::{html, Component, Context, Html, NodeRef};
 
 mod console;
 enum Msg {
-    AddOne,
+    Click,
     Render(f64),
+    MouseMove,
 }
 
 
@@ -43,14 +44,17 @@ impl Component for Model {
                 self.render_gl(timestamp, ctx.link());
                 false
             },
-            Msg::AddOne => {
-                console_warn!("add one");
-                console_error!("error");
+            Msg::Click => {
+                console_log!("clicked");
                 self.value += 1;
                 // the value has changed so we need to
                 // re-render for it to appear on the page
                 true
-            }
+            },
+            Msg::MouseMove => {
+                console_log!("mouse move");
+                true
+            },
         }
     }
 
@@ -65,7 +69,7 @@ impl Component for Model {
          </div>
          */
         html! {
-            <canvas onclick={link.callback(|_| Msg::AddOne)} ref={self.node_ref.clone()} />
+            <canvas onclick={link.callback(|_| Msg::Click)} onmousemove={link.callback(|_| Msg::MouseMove)} ref={self.node_ref.clone()} />
         }
     }
 
