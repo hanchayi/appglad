@@ -39,3 +39,5 @@ release size 222155
 ### 2022-11-14
 
 - [x] editor layout
+- [x] topbar component
+- [ ] canvas resize event and canvas size

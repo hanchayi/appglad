@@ -7,6 +7,9 @@ use yew::html::Scope;
 use yew::{html, Component, Context, Html, NodeRef};
 
 mod console;
+mod components;
+
+use components::topbar::Topbar;
 enum Msg {
     Click,
     Render(f64),
@@ -70,7 +73,9 @@ impl Component for Model {
          */
         html! {
             <div class="ag-editor">
-                <div class="top">{ "topbar" }</div>
+                <div class="top">
+                    <Topbar />
+                </div>
                 <div class="left">{ "left" }</div>
                 <div class="middle">
                     <canvas class="w-full h-full" onclick={link.callback(|_| Msg::Click)} onmousemove={link.callback(|_| Msg::MouseMove)} ref={self.node_ref.clone()} />
