@@ -2,7 +2,7 @@ use yew::{Component, Context, html, Html, Properties, NodeRef};
 use web_sys::{HtmlCanvasElement, WebGlRenderingContext as GL};
 use yew::html::Scope;
 use gloo_render::{request_animation_frame, AnimationFrame};
-use wasm_bindgen::JsCast;
+use wasm_bindgen::{JsCast, prelude::Closure};
 
 use crate::console_log;
 
@@ -11,6 +11,7 @@ pub struct Props;
 
 pub enum Msg {
     Click,
+    Resize,
     Render(f64),
     MouseMove,
 }
@@ -26,6 +27,16 @@ impl Component for Canvas {
     type Properties = Props;
 
     fn create(ctx: &Context<Self>) -> Self {
+        // let link = ctx.link();
+        let window = web_sys::window().expect("no global `window` exists");
+        // let cb = link.callback(|_| Msg::Resize);
+
+        let closure = Closure::<dyn FnMut(_)>::new(move |event: web_sys::MouseEvent| {
+            console_log!("resize");
+        });
+        window.add_event_listener_with_callback("resize", closure.as_ref().unchecked_ref());
+        closure.forget();
+
         Self { 
             gl: None,
             node_ref: NodeRef::default(),
@@ -60,6 +71,10 @@ impl Component for Canvas {
                 console_log!("mouse move");
                 true
             },
+            Msg::Resize => {
+                console_log!("window resize");
+                true
+            },
         }
     }
 
@@ -91,8 +106,6 @@ impl Component for Canvas {
                 let link = ctx.link().clone();
                 request_animation_frame(move |time| link.send_message(Msg::Render(time)))
             };
-
-            // mouse move handler
 
 
             // A reference to the handle must be stored, otherwise it is dropped and the render won't
