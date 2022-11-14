@@ -69,7 +69,15 @@ impl Component for Model {
          </div>
          */
         html! {
-            <canvas onclick={link.callback(|_| Msg::Click)} onmousemove={link.callback(|_| Msg::MouseMove)} ref={self.node_ref.clone()} />
+            <div class="ag-editor">
+                <div class="top">{ "topbar" }</div>
+                <div class="left">{ "left" }</div>
+                <div class="middle">
+                    <canvas class="w-full h-full" onclick={link.callback(|_| Msg::Click)} onmousemove={link.callback(|_| Msg::MouseMove)} ref={self.node_ref.clone()} />
+                </div>
+                <div class="right">{ "right" }</div>
+            </div>
+            
         }
     }
 

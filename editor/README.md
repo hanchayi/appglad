@@ -11,6 +11,7 @@ rustc 1.64.0 (a55dd71d5 2022-09-19)
 
 [yew](https://yew.rs/zh-Hans/docs/getting-started/introduction)
 [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/examples/console-log.html)
+[trunk](https://trunkrs.dev/assets/#directives)
 
 ## Running
 

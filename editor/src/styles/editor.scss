@@ -1,0 +1,40 @@
+@import './variable.scss';
+
+
+$top-height: 48px;
+$left-width: 240px;
+$right-width: 240px;
+
+.ag-editor {
+    .top {
+        position: fixed;
+        height: $top-height;
+        left: 0;
+        top: 0;
+        right: 0;
+    }
+
+    .left {
+        position: fixed;
+        top: $top-height;
+        width: $left-width;
+        left: 0;
+        bottom: 0;
+    }
+
+    .middle {
+        position: fixed;
+        top: $top-height;
+        left: $left-width;
+        right: $right-width;
+        bottom: 0;
+    }
+
+    .right {
+        position: fixed;
+        top: $top-height;
+        width: $right-width;
+        right: 0;
+        bottom: 0;
+    }
+}
