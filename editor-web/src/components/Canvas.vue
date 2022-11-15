@@ -79,7 +79,7 @@ function initBuffers(gl: WebGLRenderingContext) {
 
   // Now create an array of positions for the square.
 
-  const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
+  const positions = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0];
 
   // Now pass the list of positions into WebGL to build the
   // shape. We do this by creating a Float32Array from the
@@ -88,7 +88,7 @@ function initBuffers(gl: WebGLRenderingContext) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 }
 
-function drawScene(gl: WebGLRenderingContext, programInfo: ProgramInfo) {
+function drawScene(gl: WebGLRenderingContext, program: WebGLProgram) {
   gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
@@ -130,49 +130,76 @@ function drawScene(gl: WebGLRenderingContext, programInfo: ProgramInfo) {
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
-  {
-    const numComponents = 2;
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    gl.vertexAttribPointer(
-      programInfo.attribLocations.vertexPosition,
-      numComponents,
-      type,
-      normalize,
-      stride,
-      offset
-    );
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-  }
+  // {
+  //   const numComponents = 2;
+  //   const type = gl.FLOAT;
+  //   const normalize = false;
+  //   const stride = 0;
+  //   const offset = 0;
+  //   gl.vertexAttribPointer(
+  //     programInfo.attribLocations.vertexPosition,
+  //     numComponents,
+  //     type,
+  //     normalize,
+  //     stride,
+  //     offset
+  //   );
+  //   gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+  // }
 
   // Tell WebGL to use our program when drawing
 
-  gl.useProgram(programInfo.program);
+  gl.useProgram(program);
 
-  // Set the shader uniforms
+  const position = gl.getAttribLocation(program, 'a_position');
+  gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(position);
 
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.projectionMatrix,
-    false,
-    projectionMatrix
-  );
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.modelViewMatrix,
-    false,
-    modelViewMatrix
-  );
+  const time = gl.getUniformLocation(program, 'u_time');
+  const timestamp = performance.now()
+  gl.uniform1f(time, timestamp);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+}
 
-  {
-    const offset = 0;
-    const vertexCount = 4;
-    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+function draw() {
+  if (!gl) {
+    throw new Error("not support gl");
   }
+
+  const vsSource = `
+  precision mediump float;
+
+  attribute vec2 a_position;
+
+  void main() {
+      gl_Position = vec4(a_position, 0.0, 1.0);
+  }
+  `
+
+  const fsSource = `
+  precision mediump float;
+
+  uniform float u_time;
+
+  void main() {
+      float r = sin(u_time * 0.0003);
+      float g = sin(u_time * 0.0005);
+      float b = sin(u_time * 0.0007);
+
+      gl_FragColor = vec4(r, g, b, 1.0);
+  }
+  `;
+
+  const program = initShaderProgram(gl, vsSource, fsSource);
+
+  initBuffers(gl);
+  drawScene(gl, program);
+  requestAnimationFrame(() => {
+    draw()
+  })
 }
 
 
-addEventListeners()
 let gl: WebGLRenderingContext | null;
 let canvas = ref<HTMLCanvasElement | null>(null);
 onMounted(() => {
@@ -184,56 +211,7 @@ onMounted(() => {
   console.log('canvas', el)
   gl = el.getContext('webgl');
 
-  if (!gl) {
-    throw new Error("not support gl");
-  }
-
-  // 黑色清空
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
-  // 用刚刚设置的颜色刷新缓冲区
-  gl.clear(gl.COLOR_BUFFER_BIT);
-
-  const vsSource = `
-  attribute vec4 aVertexPosition;
-
-  uniform mat4 uModelViewMatrix;
-  uniform mat4 uProjectionMatrix;
-
-  void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-  }
-  `
-
-  const fsSource = `
-    void main() {
-      gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    }
-  `;
-
-  const program = initShaderProgram(gl, vsSource, fsSource);
-  const projectionMatrix = gl.getUniformLocation(program, 'uProjectionMatrix');
-
-  if (!projectionMatrix) {
-    throw new Error('projectionMatrix not found')
-  }
-  const modelViewMatrix = gl.getUniformLocation(program, 'uModelViewMatrix')
-  if (!modelViewMatrix) {
-    throw new Error('modelViewMatrix not found')
-  }
-
-  const programInfo: ProgramInfo = {
-    program: program,
-    attribLocations: {
-      vertexPosition: gl.getAttribLocation(program, 'aVertexPosition'),
-    },
-    uniformLocations: {
-      projectionMatrix,
-      modelViewMatrix,
-    },
-  };
-
-  initBuffers(gl);
-  drawScene(gl, programInfo);  
+  draw();
 })
 </script>
 
