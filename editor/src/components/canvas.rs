@@ -26,17 +26,7 @@ impl Component for Canvas {
     type Message = Msg;
     type Properties = Props;
 
-    fn create(ctx: &Context<Self>) -> Self {
-        // let link = ctx.link();
-        let window = web_sys::window().expect("no global `window` exists");
-        // let cb = link.callback(|_| Msg::Resize);
-
-        let closure = Closure::<dyn FnMut(_)>::new(move |event: web_sys::MouseEvent| {
-            console_log!("resize");
-        });
-        window.add_event_listener_with_callback("resize", closure.as_ref().unchecked_ref());
-        closure.forget();
-
+    fn create(_ctx: &Context<Self>) -> Self {
         Self { 
             gl: None,
             node_ref: NodeRef::default(),
@@ -72,7 +62,7 @@ impl Component for Canvas {
                 true
             },
             Msg::Resize => {
-                console_log!("window resize");
+                self.resize();
                 true
             },
         }
@@ -107,17 +97,42 @@ impl Component for Canvas {
                 request_animation_frame(move |time| link.send_message(Msg::Render(time)))
             };
 
-
             // A reference to the handle must be stored, otherwise it is dropped and the render won't
             // occur.
             self._render_loop = Some(handle);
+            self.add_event_listener(ctx.link());
         }
     }
 
-    fn destroy(&mut self, ctx: &Context<Self>) {}
+    fn destroy(&mut self, _ctx: &Context<Self>) {}
 }
 
 impl Canvas {
+    fn add_event_listener(&mut self, link: &Scope<Self>) {
+        let window = web_sys::window().expect("no global `window` exists");
+
+        let closure = {
+            let link = link.clone();
+            Closure::<dyn FnMut(_)>::new(move |event: web_sys::Event| {
+                console_log!("resize {:?}", event);
+                link.send_message(Msg::Resize)
+            })
+        };
+        let res = window.add_event_listener_with_callback("resize", closure.as_ref().unchecked_ref());
+
+        if res.is_err() {
+            panic!("add event listener error");
+        }
+        closure.forget();
+    }
+
+    fn resize(&self) {
+        let canvas = self.node_ref.cast::<HtmlCanvasElement>().unwrap();
+        console_log!("width: {}, height: {}", canvas.width(), canvas.height());
+        canvas.set_width((canvas.offset_width() * 2).try_into().unwrap());
+        canvas.set_height((canvas.offset_height() * 2).try_into().unwrap());
+    }
+
     fn render_gl(&mut self, timestamp: f64, link: &Scope<Self>) {
         let gl = self.gl.as_ref().expect("GL Context not initialized!");
 
