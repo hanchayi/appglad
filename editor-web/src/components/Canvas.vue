@@ -1,27 +1,40 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { mat4 } from 'gl-matrix';
-
-interface ProgramInfo {
-  program: WebGLProgram,
-  attribLocations: {
-    vertexPosition: GLint,
-  },
-  uniformLocations: {
-    projectionMatrix: WebGLUniformLocation,
-    modelViewMatrix: WebGLUniformLocation,
-  },
-}
-
-interface Buffers {
-  position: WebGLBuffer
-}
 
 function addEventListeners() {
-  console.log('addEventListeners')
   window.addEventListener('resize', () => {
-    console.log('resize')
+    resize()
   })
+}
+
+function resize() {
+  const canvasEl = canvas.value;
+  
+  if (!canvasEl) {
+    return
+  }
+
+  const containerEl = container.value;
+  
+  if (!containerEl) {
+    return
+  }
+
+  const offsetWidth = containerEl.offsetWidth;
+  const offsetHeight = containerEl.offsetHeight;
+
+  var realToCSSPixels = window.devicePixelRatio;
+  // 获取浏览器显示的画布的CSS像素值
+  // 然后计算出设备像素设置drawingbuffer
+  var displayWidth  = Math.floor(offsetWidth  * realToCSSPixels);
+  var displayHeight = Math.floor(offsetHeight * realToCSSPixels);
+
+  if (canvasEl.width != displayWidth || canvasEl.height != displayHeight) {
+    canvasEl.width = displayWidth;
+    canvasEl.height = displayHeight;
+  }
+  
+  
 }
 
 function initShaderProgram(gl: WebGLRenderingContext, vsSource: string, fsSource: string) {
@@ -52,12 +65,9 @@ function loadShader(gl: WebGLRenderingContext, type: number, source: string) {
     throw new Error('invalid shader ' + type)
   }
 
-  // Send the source to the shader object
   gl.shaderSource(shader, source);
-  // Compile the shader program
   gl.compileShader(shader);
 
-  // See if it compiled successfully
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     console.log('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
     gl.deleteShader(shader);
@@ -68,87 +78,21 @@ function loadShader(gl: WebGLRenderingContext, type: number, source: string) {
 }
 
 function initBuffers(gl: WebGLRenderingContext) {
-  // Create a buffer for the square's positions.
-
   const positionBuffer = gl.createBuffer();
-
-  // Select the positionBuffer as the one to apply buffer
-  // operations to from here out.
-
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-  // Now create an array of positions for the square.
-
   const positions = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0];
-
-  // Now pass the list of positions into WebGL to build the
-  // shape. We do this by creating a Float32Array from the
-  // JavaScript array, then use it to fill the current buffer.
-
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 }
 
 function drawScene(gl: WebGLRenderingContext, program: WebGLProgram) {
+  // gl.viewport告诉WebGL如何将裁剪空间（-1 到 +1）中的点转换到像素空间
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
   gl.depthFunc(gl.LEQUAL); // Near things obscure far things
 
-  // Clear the canvas before we start drawing on it.
-
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-  // Create a perspective matrix, a special matrix that is
-  // used to simulate the distortion of perspective in a camera.
-  // Our field of view is 45 degrees, with a width/height
-  // ratio that matches the display size of the canvas
-  // and we only want to see objects between 0.1 units
-  // and 100 units away from the camera.
-
-  const fieldOfView = (45 * Math.PI) / 180; // in radians
-  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-  const zNear = 0.1;
-  const zFar = 100.0;
-  const projectionMatrix = mat4.create();
-
-  // note: glmatrix.js always has the first argument
-  // as the destination to receive the result.
-  mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
-
-  // Set the drawing position to the "identity" point, which is
-  // the center of the scene.
-  const modelViewMatrix = mat4.create();
-
-  // Now move the drawing position a bit to where we want to
-  // start drawing the square.
-
-  mat4.translate(
-    modelViewMatrix, // destination matrix
-    modelViewMatrix, // matrix to translate
-    [-0.0, 0.0, -6.0]
-  ); // amount to translate
-
-  // Tell WebGL how to pull out the positions from the position
-  // buffer into the vertexPosition attribute.
-  // {
-  //   const numComponents = 2;
-  //   const type = gl.FLOAT;
-  //   const normalize = false;
-  //   const stride = 0;
-  //   const offset = 0;
-  //   gl.vertexAttribPointer(
-  //     programInfo.attribLocations.vertexPosition,
-  //     numComponents,
-  //     type,
-  //     normalize,
-  //     stride,
-  //     offset
-  //   );
-  //   gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-  // }
-
-  // Tell WebGL to use our program when drawing
-
   gl.useProgram(program);
 
   const position = gl.getAttribLocation(program, 'a_position');
@@ -202,6 +146,7 @@ function draw() {
 
 let gl: WebGLRenderingContext | null;
 let canvas = ref<HTMLCanvasElement | null>(null);
+let container = ref<HTMLDivElement | null>(null);
 onMounted(() => {
   const el = canvas.value;
 
@@ -211,11 +156,16 @@ onMounted(() => {
   console.log('canvas', el)
   gl = el.getContext('webgl');
 
+  addEventListeners()
+  resize()
+
   draw();
 })
 </script>
 
 <template>
-  <canvas ref='canvas' width="640" height="480"/>
+  <div style="width: 100%; height: 100%;" ref="container">
+    <canvas ref='canvas' style="width: 100%; height: 100%; display: block;" />
+  </div>
 </template>
 

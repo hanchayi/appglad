@@ -127,10 +127,10 @@ impl Canvas {
     }
 
     fn resize(&self) {
-        let canvas = self.node_ref.cast::<HtmlCanvasElement>().unwrap();
-        console_log!("width: {}, height: {}", canvas.width(), canvas.height());
-        canvas.set_width((canvas.offset_width() * 2).try_into().unwrap());
-        canvas.set_height((canvas.offset_height() * 2).try_into().unwrap());
+        // let canvas = self.node_ref.cast::<HtmlCanvasElement>().unwrap();
+        // console_log!("width: {}, height: {}", canvas.width(), canvas.height());
+        // canvas.set_width((canvas.offset_width() * 2).try_into().unwrap());
+        // canvas.set_height((canvas.offset_height() * 2).try_into().unwrap());
     }
 
     fn render_gl(&mut self, timestamp: f64, link: &Scope<Self>) {

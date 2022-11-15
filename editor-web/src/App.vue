@@ -6,25 +6,13 @@ import Canvas from './components/Canvas.vue'
 
 <template>
   <div>
-    <div>topbar</div>
-    <div>left</div>
-    <div>
+    <div style="position: fixed; top: 0; left: 0; right: 0;height: 48px">topbar</div>
+    <div style="position: fixed; top: 48px; left: 0; bottom: 0;width: 48px">left</div>
+    <div style="position: fixed; top: 48px; left: 48px; right: 48px;bottom: 0;">
       <Canvas />
     </div>
-    <div>right</div>
+    <div style="position: fixed; top: 48px; right: 0; bottom: 0;width: 48px">right</div>
   </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+
