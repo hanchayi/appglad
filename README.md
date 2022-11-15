@@ -45,3 +45,6 @@ release size 222155
 
 ### 2022-11-15
 - [ ] canvas resize event and canvas size
+
+Finished release [optimized] target(s) in 41.46s
+release size 253202
