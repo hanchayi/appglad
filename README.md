@@ -54,4 +54,4 @@ editor-web
 
 ### 2022-11-16
 - [x] editorweb canvas resize optimize
-- [] editor resize
+- [x] editor resize

@@ -4,7 +4,7 @@ use yew::html::Scope;
 use gloo_render::{request_animation_frame, AnimationFrame};
 use wasm_bindgen::{JsCast, prelude::Closure};
 
-use crate::console_log;
+use crate::{console_log, components::canvas};
 
 #[derive(PartialEq, Properties)]
 pub struct Props;
@@ -20,6 +20,8 @@ pub struct Canvas {
     gl: Option<GL>,
     node_ref: NodeRef,
     _render_loop: Option<AnimationFrame>,
+    width: i32,
+    height: i32,
 }
 
 impl Component for Canvas {
@@ -31,13 +33,15 @@ impl Component for Canvas {
             gl: None,
             node_ref: NodeRef::default(),
             _render_loop: None,
+            width: 0,
+            height: 0,
         }
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let link = _ctx.link();
         html! {
-            <canvas class="w-full h-full" onclick={link.callback(|_| Msg::Click)} onmousemove={link.callback(|_| Msg::MouseMove)} ref={self.node_ref.clone()} />
+            <canvas class="w-full h-full block" onclick={link.callback(|_| Msg::Click)} onmousemove={link.callback(|_| Msg::MouseMove)} ref={self.node_ref.clone()} />
         }
     }
 
@@ -100,6 +104,7 @@ impl Component for Canvas {
             // A reference to the handle must be stored, otherwise it is dropped and the render won't
             // occur.
             self._render_loop = Some(handle);
+            self.resize();
             self.add_event_listener(ctx.link());
         }
     }
@@ -110,11 +115,9 @@ impl Component for Canvas {
 impl Canvas {
     fn add_event_listener(&mut self, link: &Scope<Self>) {
         let window = web_sys::window().expect("no global `window` exists");
-
         let closure = {
             let link = link.clone();
             Closure::<dyn FnMut(_)>::new(move |event: web_sys::Event| {
-                console_log!("resize {:?}", event);
                 link.send_message(Msg::Resize)
             })
         };
@@ -126,15 +129,29 @@ impl Canvas {
         closure.forget();
     }
 
-    fn resize(&self) {
-        // let canvas = self.node_ref.cast::<HtmlCanvasElement>().unwrap();
-        // console_log!("width: {}, height: {}", canvas.width(), canvas.height());
-        // canvas.set_width((canvas.offset_width() * 2).try_into().unwrap());
-        // canvas.set_height((canvas.offset_height() * 2).try_into().unwrap());
+    fn resize(&mut self) {
+        let window = web_sys::window().expect("no global `window` exists");
+        let canvas = self.node_ref.cast::<HtmlCanvasElement>().unwrap();
+
+        let offset_width = canvas.offset_width();
+        let offset_height = canvas.offset_height();
+
+        window.device_pixel_ratio();
+
+        let display_width = (offset_width * 2) as u32;
+        let display_height = (offset_height * 2) as u32;
+        self.width = display_width as i32;
+        self.height = display_height as i32;
+
+        if canvas.width() != display_width || canvas.height() != display_height {
+            canvas.set_width(display_width);
+            canvas.set_height(display_height);
+        }
     }
 
     fn render_gl(&mut self, timestamp: f64, link: &Scope<Self>) {
         let gl = self.gl.as_ref().expect("GL Context not initialized!");
+        gl.viewport(0, 0, self.width, self.height);
 
         let vert_code = include_str!("../assets/basic.vert");
         let frag_code = include_str!("../assets/basic.frag");
