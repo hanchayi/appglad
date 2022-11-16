@@ -14,14 +14,8 @@ function resize() {
     return
   }
 
-  const containerEl = container.value;
-  
-  if (!containerEl) {
-    return
-  }
-
-  const offsetWidth = containerEl.offsetWidth;
-  const offsetHeight = containerEl.offsetHeight;
+  const offsetWidth = canvasEl.offsetWidth;
+  const offsetHeight = canvasEl.offsetHeight;
 
   var realToCSSPixels = window.devicePixelRatio;
   // 获取浏览器显示的画布的CSS像素值
@@ -164,8 +158,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="width: 100%; height: 100%;" ref="container">
-    <canvas ref='canvas' style="width: 100%; height: 100%; display: block;" />
-  </div>
+  <canvas ref='canvas' style="width: 100%; height: 100%; display: block;" />
 </template>
 

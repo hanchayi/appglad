@@ -44,7 +44,14 @@ release size 222155
 
 
 ### 2022-11-15
-- [ ] canvas resize event and canvas size
+- [x] editorweb canvas resize event and canvas size
 
-Finished release [optimized] target(s) in 41.46s
-release size 253202
+editor
+release size 253KiB
+
+editor-web
+54.10 KiB
+
+### 2022-11-16
+- [x] editorweb canvas resize optimize
+- [] editor resize
