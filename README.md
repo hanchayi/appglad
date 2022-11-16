@@ -55,3 +55,5 @@ editor-web
 ### 2022-11-16
 - [x] editorweb canvas resize optimize
 - [x] editor resize
+- [x] resize listener remove
+- [x] add router

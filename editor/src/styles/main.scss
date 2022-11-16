@@ -1,0 +1,19 @@
+$nav-height: 48px;
+
+.ag {
+    nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: #{$nav-height};
+    }
+    main {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: #{$nav-height};
+    }
+    
+}

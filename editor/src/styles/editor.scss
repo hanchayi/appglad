@@ -7,7 +7,7 @@ $right-width: 240px;
 
 .ag-editor {
     .top {
-        position: fixed;
+        position: absolute;
         height: $top-height;
         left: 0;
         top: 0;
@@ -15,7 +15,7 @@ $right-width: 240px;
     }
 
     .left {
-        position: fixed;
+        position: absolute;
         top: $top-height;
         width: $left-width;
         left: 0;
@@ -23,7 +23,7 @@ $right-width: 240px;
     }
 
     .middle {
-        position: fixed;
+        position: absolute;
         top: $top-height;
         left: $left-width;
         right: $right-width;
@@ -31,7 +31,7 @@ $right-width: 240px;
     }
 
     .right {
-        position: fixed;
+        position: absolute;
         top: $top-height;
         width: $right-width;
         right: 0;

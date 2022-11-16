@@ -4,7 +4,7 @@ use yew::html::Scope;
 use gloo_render::{request_animation_frame, AnimationFrame};
 use wasm_bindgen::{JsCast, prelude::Closure};
 
-use crate::{console_log, components::canvas};
+use crate::console_log;
 
 #[derive(PartialEq, Properties)]
 pub struct Props;
@@ -22,6 +22,7 @@ pub struct Canvas {
     _render_loop: Option<AnimationFrame>,
     width: i32,
     height: i32,
+    listener: Option<Closure<dyn FnMut(web_sys::Event)>>,
 }
 
 impl Component for Canvas {
@@ -35,6 +36,7 @@ impl Component for Canvas {
             _render_loop: None,
             width: 0,
             height: 0,
+            listener: None,
         }
     }
 
@@ -62,7 +64,7 @@ impl Component for Canvas {
                 true
             },
             Msg::MouseMove => {
-                console_log!("mouse move");
+                // console_log!("mouse move");
                 true
             },
             Msg::Resize => {
@@ -93,7 +95,7 @@ impl Component for Canvas {
         // culling etc.
 
         if first_render {
-            console_log!("first render {}", 1);
+            console_log!("first_render");
             // The callback to request animation frame is passed a time value which can be used for
             // rendering motion independent of the framerate which may vary.
             let handle = {
@@ -109,7 +111,10 @@ impl Component for Canvas {
         }
     }
 
-    fn destroy(&mut self, _ctx: &Context<Self>) {}
+    fn destroy(&mut self, _ctx: &Context<Self>) {
+        console_log!("destroy");
+        self.remove_event_listener()
+    }
 }
 
 impl Canvas {
@@ -117,19 +122,30 @@ impl Canvas {
         let window = web_sys::window().expect("no global `window` exists");
         let closure = {
             let link = link.clone();
-            Closure::<dyn FnMut(_)>::new(move |event: web_sys::Event| {
+            Closure::<dyn FnMut(web_sys::Event)>::wrap(Box::new(move |_event| {
                 link.send_message(Msg::Resize)
-            })
+            }))
         };
         let res = window.add_event_listener_with_callback("resize", closure.as_ref().unchecked_ref());
+        self.listener = Some(closure);
 
         if res.is_err() {
             panic!("add event listener error");
         }
-        closure.forget();
+        // closure.forget();
+    }
+
+    fn remove_event_listener(&mut self) {
+        let window = web_sys::window().expect("no global `window` exists");
+
+        if let Some(listener) = self.listener.take()  {
+            console_log!("remove resize");
+            window.remove_event_listener_with_callback("resize", listener.as_ref().unchecked_ref()).unwrap();
+        }
     }
 
     fn resize(&mut self) {
+        console_log!("resize");
         let window = web_sys::window().expect("no global `window` exists");
         let canvas = self.node_ref.cast::<HtmlCanvasElement>().unwrap();
 

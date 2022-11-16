@@ -27,8 +27,6 @@ function resize() {
     canvasEl.width = displayWidth;
     canvasEl.height = displayHeight;
   }
-  
-  
 }
 
 function initShaderProgram(gl: WebGLRenderingContext, vsSource: string, fsSource: string) {
