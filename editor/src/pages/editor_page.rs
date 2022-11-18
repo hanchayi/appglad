@@ -1,5 +1,5 @@
 use yew::{html, Component, Context, Html};
-use crate::{components::{ topbar::Topbar, canvas::Canvas }, console_log};
+use crate::{components::{ layout::Layout }};
 
 pub struct EditorPage {
 }
@@ -13,29 +13,12 @@ impl Component for EditorPage {
         }
     }
 
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let on_click = ctx.link().callback(|_| {
-            console_log!("on click1")
-        });
-
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
-            <div class="ag-editor">
-                <div class="top" onclick={ on_click }>
-                    <Topbar />
-                </div>
-                <div class="left">{ "left" }</div>
-                <div class="middle">
-                    <Canvas />
-                </div>
-                <div class="right">{ "right" }</div>
-            </div>
-            
+            <Layout />
         }
     }
 }
 
-impl EditorPage {
-  
-}
 
 
