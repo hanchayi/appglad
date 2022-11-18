@@ -57,3 +57,10 @@ editor-web
 - [x] editor resize
 - [x] resize listener remove
 - [x] add router
+
+editor 
+Finished release [optimized] target(s) in 21.28s
+release size 520484 
+
+### 2022-11-18
+- [x] editorweb router

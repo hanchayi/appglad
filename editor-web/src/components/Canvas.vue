@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 function addEventListeners() {
-  window.addEventListener('resize', () => {
-    resize()
-  })
+  window.addEventListener('resize', resize)
+}
+
+function removeEventListeners() {
+  window.removeEventListener('resize', resize)
 }
 
 function resize() {
@@ -152,10 +154,18 @@ onMounted(() => {
   resize()
 
   draw();
-})
+});
+
+onUnmounted(() => {
+  removeEventListeners()
+});
+
+function handleClick() {
+  console.log("handleClick")
+}
 </script>
 
 <template>
-  <canvas ref='canvas' style="width: 100%; height: 100%; display: block;" />
+  <canvas ref='canvas' style="width: 100%; height: 100%; display: block;" @click="handleClick"/>
 </template>
 
