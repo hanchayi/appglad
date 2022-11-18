@@ -64,3 +64,4 @@ release size 520484
 
 ### 2022-11-18
 - [x] editorweb router
+- [x] editor multi events test
