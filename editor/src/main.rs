@@ -4,11 +4,13 @@ use yew_router::prelude::*;
 mod utils;
 mod components;
 mod pages;
+
 use pages::{
     page_not_found::PageNotFound,
     editor_page::EditorPage,
 };
 use yew::html::Scope;
+use std::fmt;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum Route {
@@ -21,6 +23,23 @@ pub enum Route {
 
 pub enum Msg {
     ToggleNavbar,
+}
+
+#[derive(Debug)]
+pub enum Hovered {
+    Item(String),
+    List,
+    None,
+}
+
+impl fmt::Display for Hovered {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, {}, match self {
+            Hovered::Item(_) => todo!(),
+            Hovered::List => todo!(),
+            Hovered::None => todo!(),
+        })
+    }
 }
 
 pub struct Main {

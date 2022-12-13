@@ -66,3 +66,6 @@ release size 520484
 - [x] editorweb router
 - [x] editor multi events test
 - [x] assets list
+
+### 2022-11-21
+- [] mouse over add asset
