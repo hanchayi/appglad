@@ -14,6 +14,7 @@ fn main() -> Result<()> {
         path: PathBuf::from(path),
     };
     println!("options {:?}", options);
+    eprintln!("sdf");
     let now = Instant::now();
     let res = read_to_string(&options);
     println!("time {}", now.elapsed().as_micros());
