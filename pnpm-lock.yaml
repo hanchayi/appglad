@@ -19,6 +19,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@appgald/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       next:
         specifier: latest
         version: 13.3.0(react-dom@18.2.0)(react@18.2.0)
@@ -28,9 +31,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      ui:
-        specifier: workspace:*
-        version: link:../../packages/ui
     devDependencies:
       '@types/node':
         specifier: ^17.0.12
@@ -53,6 +53,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@appgald/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       next:
         specifier: latest
         version: 13.3.0(react-dom@18.2.0)(react@18.2.0)
@@ -62,9 +65,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      ui:
-        specifier: workspace:*
-        version: link:../../packages/ui
     devDependencies:
       '@types/node':
         specifier: ^17.0.12
