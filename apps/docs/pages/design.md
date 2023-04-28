@@ -36,3 +36,15 @@ sequenceDiagram
   Web ->> Canvas: Patch render
   Engine ->> Server: Broadcast change
 ```
+
+## 结构设计
+```mermaid
+classDiagram
+
+class File {
+  pages
+}
+class Page {
+  frames
+}
+```
