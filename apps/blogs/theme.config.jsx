@@ -1,5 +1,5 @@
 export default {
-  footer: <p>MIT 2023 © Nextra.</p>,
+  footer: <a href="https://beian.miit.gov.cn">苏ICP备2022043623号</a>,
   head: ({ title, meta }) => (
     <>
       {meta.description && (
@@ -13,6 +13,10 @@ export default {
   postFooter: null,
   darkMode: false,
   navs: [
+    {
+      url: 'https://github.com/shuding/nextra',
+      name: 'Nextra'
+    },
     {
       url: 'https://github.com/shuding/nextra',
       name: 'Nextra'
