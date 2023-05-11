@@ -36,6 +36,9 @@ Enter the language for which the snippets should appear. The id is an identifier
 ## 发布
 
 ``` bash
-npm install -g vsce
+sudo npm install -g @vscode/vsce
 vsce package
 ```
+
+到https://marketplace.visualstudio.com/提交插件
+
