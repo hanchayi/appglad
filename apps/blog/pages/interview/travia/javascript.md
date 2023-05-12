@@ -70,3 +70,15 @@ Child的prototype.__proto__指向了Parent.prototype这样child就能找到Paren
 结构如下：
 ![image](./prototype.drawio.svg)
 
+## 你如何看待 AMD 与 CommonJS
+AMD是web端requirejs按需加载模块
+CommonJS服务端node的规范
+
+``` javascript
+define('a', ['b'], function(b) {
+  return
+})
+
+require('b')
+module.exports = {}
+```
