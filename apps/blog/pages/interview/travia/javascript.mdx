@@ -8,21 +8,21 @@
 
 ## 解释下this
 
-this指向函数的调用者
+总结this指向函数的调用者，箭头函数体内的this对象，就是定义该函数时所在的作用域指向的对象，而不是使用时所在的作用域指向的对象。
 
-普通function this指向Window
+1. 普通function this指向Window
 ``` javascript
 (function test(){ console.log(this)})()
 
 // Window {0: global, window: Window, self: Window, document: document, name: '', location: Location, …}
 ```
-如果用apply/call可以改变this的指向
+2. 如果用apply/call可以改变this的指向
 ``` javascript
 (function test(){ console.log(this)}).call({ a: 1})
 
 // {a: 1}
 ```
-类中的函数this指向class实例
+3. 类中的函数this指向class实例
 ```javascript
 function Test() { }
 Test.prototype.test = function() { console.log(this)}
@@ -30,4 +30,18 @@ Test.prototype.test = function() { console.log(this)}
 
 // Test {}
 ```
-如果函数是 ES2015 箭头函数，它会忽略上面的所有规则，并在创建时接收其周围作用域的 this 值。
+4. 如果函数是 ES2015 箭头函数，它会忽略上面的所有规则，并在创建时接收其周围作用域的 this 值。
+```javascript
+(()=>{console.log(this)}).call({})
+// Window {}
+```
+
+## ES6新特性
+let const 块级作用域的变量
+箭头函数
+
+## 箭头函数
+
+- 不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
+- 不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
+- 不可以使用yield命令，因此箭头函数不能用作 Generator 函数。
