@@ -5,3 +5,29 @@
 
 - 内存占用减少了，因为父元素只需要一个处理程序，而不必在每个后代元素上附加事件处理程序。
 - 无需从已删除的元素中取消绑定处理程序，也无需为新元素绑定事件。
+
+## 解释下this
+
+this指向函数的调用者
+
+普通function this指向Window
+``` javascript
+(function test(){ console.log(this)})()
+
+// Window {0: global, window: Window, self: Window, document: document, name: '', location: Location, …}
+```
+如果用apply/call可以改变this的指向
+``` javascript
+(function test(){ console.log(this)}).call({ a: 1})
+
+// {a: 1}
+```
+类中的函数this指向class实例
+```javascript
+function Test() { }
+Test.prototype.test = function() { console.log(this)}
+(new Test()).test()
+
+// Test {}
+```
+如果函数是 ES2015 箭头函数，它会忽略上面的所有规则，并在创建时接收其周围作用域的 this 值。
