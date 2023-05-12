@@ -45,3 +45,28 @@ let const 块级作用域的变量
 - 不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
 - 不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
 - 不可以使用yield命令，因此箭头函数不能用作 Generator 函数。
+
+## 解释原型继承是如何工作的
+
+``` javascript
+function Parent() {
+  this.name = 'Parent'
+}
+Parent.prototype.test = function(){}
+
+function Child() {
+  Parent.call(this) // super
+}
+Child.prototype = Object.create(Parent.prototype)
+Child.prototype.constructor = Child
+
+console.log(new Child().name)
+console.log(new Child().test)
+```
+
+属性的查找先找自己的对象属性，再找__proto__上面的属性一直到null为止
+Child的prototype.__proto__指向了Parent.prototype这样child就能找到Parent定义的方法
+
+结构如下：
+![image](./prototype.drawio.svg)
+
