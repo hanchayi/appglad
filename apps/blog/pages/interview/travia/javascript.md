@@ -82,3 +82,72 @@ define('a', ['b'], function(b) {
 require('b')
 module.exports = {}
 ```
+
+## 什么是闭包，以及如何/为什么使用闭包
+
+闭包是由 函数 以及声明该函数的 词法环境 组合而成的
+
+```javascript
+function test() {
+  var a = 1
+  return function() {
+    debugger
+    console.log(a)
+  }
+}
+
+const a = test()
+a()
+```
+执行到debugger的时候，Scope中如下：
+``` javascript
+Scope {
+  Local: { this: Window},
+  Closure(test): { a: 1 }
+}
+```
+
+=> 模拟C++ javascript线程
+``` javascript
+class ContextStack {
+  push
+}
+stack = new ContextStack
+
+class Context {
+  Scope: {} // 变量环境 VO
+  Closure: {} // 词法环境
+
+  eval(code) {
+    compile(code)
+    exec()
+  }
+
+  compile() {
+    // { FunctionDeclaration: { test }, VariableDeclaration: { }, CallExpression: { test }}
+    parse()
+    // find declarations put into VO
+    // VO { a: undefined, test: undefined}
+    declarationsVo()
+    // 转化为字节码
+    execByteCode()
+  }
+
+  exec(bytecodes) {
+    bytecodes.forEach(bytecode => {
+      if (bytecode === CallExpression) {
+        const ctx = new Context()
+        this.stack.push(ctx)
+        ctx.eval(expression.code)
+        this.stack.pop()
+      }
+    });
+  }
+}
+new Context().eval('...')
+```
+
+用处：
+1. 私有变量
+
+
