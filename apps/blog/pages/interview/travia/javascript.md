@@ -150,4 +150,35 @@ new Context().eval('...')
 用处：
 1. 私有变量
 
+## 防抖、节流
+节流（throttle）
+``` javascript
+function throttle() {
+  let doing = false
+  if (doing) {
+    return
+  }
+  doing = true
 
+  setTimeout(() => {
+    console.log('sdf')
+    doing = false
+  }, 500);
+}
+```
+
+防抖（debounce）
+``` javascript
+function debounce() {
+  let timer
+  if (timer) {
+    clearTimeout(timer)
+    return
+  }
+
+  timer = setTimeout(() => {
+    timer = null
+    console.log('sdf')
+  }, 500)
+}
+```
