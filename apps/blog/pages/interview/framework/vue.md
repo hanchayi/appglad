@@ -1,3 +1,25 @@
+## Vue响应式原理
+
+
+```
+settter
+
+->
+Dep.notify()
+
+->
+watcher.update
+
+->
+get()重新生成以来
+patch对比VNode
+
+
+->
+生成新的dom
+
+```
+
 ## 谈谈你对 keep-alive 的了解？
 
 
