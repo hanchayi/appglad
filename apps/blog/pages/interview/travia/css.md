@@ -20,11 +20,26 @@ margin重叠
 rem
 
 ```
-设计稿            360px  1rem = 360px
-根元素的fontsize  375px  1rem  = 375px    root.fontsize = 375px
-子元素           32px = 2rem
+设计稿
+根元素的fontsize
+子元素
 ```
 
 
 
+## flex
 
+``` css
+.flex {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  flex-wrap: wrap;
+  justify-content: center; //主轴对齐
+  align-items: center;
+  align-content: flex-start;
+  align-self: start;
+}
+```
