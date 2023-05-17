@@ -26,7 +26,7 @@ title: 组件协议规范
 
 上传组件本身是没有任何视图部分的，我们会在上传组件孩子里面加上一个布局和一个按钮，这样用户可以修改这个上传的显示也能使用上传的功能。
 
-而每一个真正的代码组件会对应一份组件配置，该配置记录改组件的属性、事件、舞台渲染和代码依赖。
+而每一个真正的代码组件会对应一份[组件配置](./component_config.md)，该配置记录改组件的属性、事件、舞台渲染和代码依赖。
 
 组件选中的时候会有组件交互面板，平台需支持用低代码的交互去编辑交互，故交互组件的数据结构和本身舞台的数据结构是一样的。
 
@@ -76,40 +76,6 @@ title: 组件协议规范
 |ins_id| 实例_id, 便于回溯和检索 |`string`|否|
 |alias| 显示别名 |`string`|否|
 |config_uuid| 组件的配置id |`string`|是|
-
-
-### ComponentConfig
-组件配置
-
-|参数|说明|类型|必须|
-|--|--|--|--|
-|uuid| 唯一id|`string`|是|
-|version| 版本|`string`|是|
-|name| 组件名|`string`|是|
-|label| 显示名|`string`|是|
-|props| 属性|`ComponentConfigProp`|是|
-|depends| 依赖|`string`|是|
-
-### ComponentConfigProp
-
-配置属性
-
-|参数|说明|类型|必须|
-|--|--|--|--|
-|key| 属性英文名|`string`|是|
-|label| 属性中文名|`string`|是|
-|schema| 值结构|`Schema`|否|
-|category| prop类型|`PropType`|是|
-|value| 设定值|`any`|否|
-|default|默认值|`any`|否|
-|payload| 事件参数定义|`PayLoad[]`|否|
-|path| 指定渲染路径，category=editor_render生效 |`string|RemoteEditorRender`|否|
-
-
-``` typescript
-type PropType = 'attr' | 'event' | 'slot' | 'param' | 'editor_render' | 'cdn';
-```
-
 
 ### ComponentData
 
@@ -279,85 +245,6 @@ export enum DataType {
 
 
 ## 示例数据
-
-### ComponentConfig
-
-``` json
-{
-  "uuid": "sal20000_org_key2112063qv5zi6dpn",
-  "name": "IdgNetdiskUpload",
-  "label": "网盘上传",
-  "props": [
-    {
-      "key": "default-file-list",
-      "label": "默认已上传的文件列表",
-      "category": "attr",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "name": { "type": "string" },
-            "url": { "type": "string" },
-          }
-        }
-      },
-      "default": [],
-    },
-    {
-      "key": "before-upload",
-      "label": "上传文件之前的钩子",
-      "category": "attr",
-      "schema": {
-        "type": "function"
-      },
-      "default": {},
-      "payload": [
-        {
-          "key": "file",
-          "label": "文件",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "name": { "type": "string" },
-              "size": { "type": "number" },
-              "type": { "type": "string" },
-            }
-          }
-        }
-      ]
-    },
-    {
-      "path":{
-          "type":"remote",
-          "appid":"34df8e51573c4a7686f74bda9b55c915",
-          "remoteEntry":"//pkg.oneitfarm.com/@idg/uplpad-cropper/0.0.11/remoteEntry.js",
-          "path":"34df8e51573c4a7686f74bda9b55c915.uplpadcopper.UploadCopper"
-      },
-      "category":"editor_render"
-    }
-  ],
-  "depends": [
-    {
-      "type":"async-service",
-      "value":{
-          "source":"@idg/netdisk",
-          "channelAlias":"default",
-          "appid":"ole8vcm1jivxzjywstgh9kfror2qa3d7",
-          "version":"2.7.11"
-      }
-    },
-    {
-      "type":"depend",
-      "value":{
-          "id":"component.ole8vcm1jivxzjywstgh9kfror2qa3d7.upload.Upload",
-          "variableName":"IdgNetdiskUpload"
-      }
-    }
-  ]
-}
-
-```
 
 ### ComponentTree
 
