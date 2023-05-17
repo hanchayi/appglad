@@ -13,14 +13,14 @@ flowchart TD
     --> Sandbox编译源码
 ```
 
-## 时序
+<!-- ## 时序 -->
 
-```mermaid
+<!-- ```mermaid
 sequenceDiagram
     Editor->>Sandbox: open()
     Sandbox->>Editor: InitializedMessage
     Editor->>Sandbox: CompileMessage
-```
+``` -->
 
 
 ``` typescript

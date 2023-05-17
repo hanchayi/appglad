@@ -1,6 +1,27 @@
+---
+title: 出码
+---
+
 # 出码
 
-要解决
+根据单个或多个页面schema生成代码，根据生成的代码退仓，除了组件代码还要生成项目依赖。
+
+支持相同端根据框架生成相关代码
+
+- 支持全量生成
+- 支持单文件生成（查看当前页面代码）
+
+## 代码生成器
+```mermaid
+classDiagram
+    class Generator{
+        +generateProjectFiles()
+        +pushFiles()
+        +clearFiles()
+    }
+
+```
+
 
 
 ## 问题

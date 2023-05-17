@@ -51,15 +51,53 @@ title: 组件配置协议
 |value| 设定值|`any`|否|
 |default|默认值|`any`|否|
 |payload| 事件参数定义|`PayLoad[]`|否|
-|path| 指定渲染路径，category=editor_render生效 |`string|RemoteEditorRender`|否|
 
 
 ``` typescript
-type PropType = 'attr' | 'event' | 'slot' | 'param' | 'editor_render' | 'cdn';
+type PropType = 'attr' | 'event' | 'slot' | 'param' | 'render' | 'cdn';
 ```
 
+
+### 特殊render的属性
+
+| key      | 类型 |  描述 |
+| --- | --- | ---
+| path      |     `RenderPath`    |  渲染路径
+| isLayout   | boolean        |   是不是布局
+| doubleClickEdit   |     DoubleClickEdit    |   支持双击编辑
+| dynamicView   | DymanicView        |   是不是动态视图
+| ...   | ...        |   ...
+
+
+#### RenderPath
+
+|参数|说明|类型|必须|
+|--|--|--|--|
+|type||`RenderPathType`|是|
+|appid||`string`|是|
+|remoteEntry||`string`|是|
+|path||`string`|是|
+|dependServiceAppid||`string`|否|
+
+#### DoubleClickEdit
+
+|参数|说明|类型|必须|
+|--|--|--|--|
+|matchType| 匹配类型 |`"tag"\|"className"`|是|
+|match| 匹配值 |`string`|是|
+|key| 修改属性key|`string`|是|
+|target| 目标元素|`string`|否|
+
+### DymanicView
+
+|参数|说明|类型|必须|
+|--|--|--|--|
+|showKey| 显示修改的属性 |`string`|是|
+
+
+
 ### Depend
-依赖
+依赖是使用该组件所需的外部依赖，详情参考[依赖](./depend.md)
 
 |参数|说明|类型|必须|
 |--|--|--|--|
@@ -147,13 +185,14 @@ export enum DataType {
       ]
     },
     {
-      "path":{
+      "key": "path",
+      "value":{
           "type":"remote",
           "appid":"34df8e51573c4a7686f74bda9b55c915",
           "remoteEntry":"//pkg.oneitfarm.com/@idg/uplpad-cropper/0.0.11/remoteEntry.js",
           "path":"34df8e51573c4a7686f74bda9b55c915.uplpadcopper.UploadCopper"
       },
-      "category":"editor_render"
+      "category":"render"
     }
   ],
   "depends": [
