@@ -2,6 +2,38 @@
 title: 组件协议规范
 ---
 
+# 组件协议
+
+## 版本信息
+
+最新版本: 0.1.0
+
+创建时间: 2022-09-24
+
+更新时间: 2022-09-24
+
+## 变更日志
+
+| 时间 | 版本号 | 变更人 |  主要变更内容
+| --- | ---- | --- | --- |
+| 2022-09-24 | 0.1.0  |  张逸 | 创建协议
+
+## 背景
+
+组件是平台中左侧组件资源栏拖动出来的物料。
+
+一个拖出来的组件实际对应到一个或多个真正的代码中的组件，比如拖一个上传组件。
+
+上传组件本身是没有任何视图部分的，我们会在上传组件孩子里面加上一个布局和一个按钮，这样用户可以修改这个上传的显示也能使用上传的功能。
+
+而每一个真正的代码组件会对应一份组件配置，该配置记录改组件的属性、事件、舞台渲染和代码依赖。
+
+组件选中的时候会有组件交互面板，平台需支持用低代码的交互去编辑交互，故交互组件的数据结构和本身舞台的数据结构是一样的。
+
+由于跨端或某些其他需求，会需要我们组件的渲染和代码的数据不一致，故组件存在渲染树和代码树，如果没有代码树则认为他们是一致的。
+
+## 协议结构
+
 ### Component
 组件
 
@@ -27,7 +59,7 @@ title: 组件协议规范
 |config| 操作配置|`string`|是|
 |meta|	元数据|`string`|是|
 |sort_order| 排序优先级 |`number`|是|
-|status||`number`|是|
+|status| 状态 |`number`|是|
 
 ### ComponentTree
 组件树
@@ -57,6 +89,26 @@ title: 组件协议规范
 |label| 显示名|`string`|是|
 |props| 属性|`ComponentConfigProp`|是|
 |depends| 依赖|`string`|是|
+
+### ComponentConfigProp
+
+配置属性
+
+|参数|说明|类型|必须|
+|--|--|--|--|
+|key| 属性英文名|`string`|是|
+|label| 属性中文名|`string`|是|
+|schema| 值结构|`Schema`|否|
+|category| prop类型|`PropType`|是|
+|value| 设定值|`any`|否|
+|default|默认值|`any`|否|
+|payload| 事件参数定义|`PayLoad[]`|否|
+|path| 指定渲染路径，category=editor_render生效 |`string|RemoteEditorRender`|否|
+
+
+``` typescript
+type PropType = 'attr' | 'event' | 'slot' | 'param' | 'editor_render' | 'cdn';
+```
 
 
 ### ComponentData
@@ -128,6 +180,17 @@ title: 组件协议规范
 |component_uuid| 对应表的uuid|`string`|是|
 |code_tree| 代码树|`ComponentTree`|否|
 
+
+
+### Depend
+依赖
+
+|参数|说明|类型|必须|
+|--|--|--|--|
+|type| 类型|`"npm" ｜ "use" | "import" | "import_default"`|是|
+|value| 值|`any`|是|
+
+
 ### Style
 
 基础分辨率静态样式
@@ -185,28 +248,6 @@ title: 组件协议规范
 |modifier| 事件修饰符的集合，例 stop|`Modifier[]`|否|
 
 
-### ComponentConfigProp
-
-配置属性
-
-|参数|说明|类型|必须|
-|--|--|--|--|
-|key| 属性英文名|`string`|是|
-|label| 属性中文名|`string`|是|
-|schema| 值结构|`Schema`|否|
-|category| prop类型|`PropType`|是|
-|value| 设定值|`any`|否|
-|default|默认值|`any`|否|
-|payload| 事件参数定义|`PayLoad[]`|否|
-|path| 指定渲染路径，category=editor_render生效 |`string|RemoteEditorRender`|否|
-
-
-``` typescript
-type PropType = 'attr' | 'event' | 'slot' | 'param' | 'editor_render' | 'cdn';
-```
-
-### Depend
-依赖
 
 
 ### Schema
@@ -237,13 +278,11 @@ export enum DataType {
 ```
 
 
-### 组件定义
+## 示例数据
 
-
-### 实例数据
+### ComponentConfig
 
 ``` json
-// ComponentConfig
 {
   "uuid": "sal20000_org_key2112063qv5zi6dpn",
   "name": "IdgNetdiskUpload",
@@ -320,10 +359,10 @@ export enum DataType {
 
 ```
 
+### ComponentTree
 
 
 ``` json
-// ComponentTree
 [
   {
     "id": 0,
