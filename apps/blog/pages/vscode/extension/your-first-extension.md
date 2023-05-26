@@ -40,5 +40,17 @@ sudo npm install -g @vscode/vsce
 vsce package
 ```
 
-到https://marketplace.visualstudio.com/提交插件
+到[vscode插件市场](https://marketplace.visualstudio.com/manage/)提交插件
+
+## 修改图标
+
+在`package.json`中指定`icon`字段
+
+``` json
+{
+  "name": "markdown-easy",
+  "icon": "icon.png"
+}
+
+```
 
