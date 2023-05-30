@@ -21,7 +21,14 @@ description: 蓝图的核心模块和技术架构
 classDiagram
     class Editor{
       constructor(container)
+      -Graph graph
+      -Generator generator
+      -UndoManager undoManager
       +changeMode() // 切换变量or方法视图
+      +undo()
+      +redo()
+      +destroy()
+      -createGraph()
     }
 
     class Generator{
@@ -29,7 +36,7 @@ classDiagram
       +generate()
     }
 
-    class GraphView {
+    class Graph {
       -GraphModel graphModel
       -behaviors
       -shapes
@@ -38,9 +45,18 @@ classDiagram
       +init()
     }
 
+    class Shape {
+      +init()
+    }
+
     class GraphModel {
-      +edges
-      +nodes
+      +Edge edges
+      +Node nodes
+      -nextId()
+      +add(node)
+      +remove(node)
+      +setData(node, data)
+      +setGeometry(node, geometry)
     }
 
     class Store {
@@ -60,7 +76,7 @@ classDiagram
       +NodeConfigData data
     }
 
-    class NodeModel {
+    class Node {
       +string version
       +string tag
     }
