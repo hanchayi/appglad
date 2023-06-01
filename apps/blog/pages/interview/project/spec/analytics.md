@@ -28,8 +28,6 @@ Vue.use(VueGtag, {
   config: {
     id: 'XXXX',
   },
-  appName: 'xxx',
-  pageTrackerScreenviewEnabled: true
 }, app.router)
 
 ```
