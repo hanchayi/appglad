@@ -18,6 +18,8 @@ yarn add vue-gtag
 
 ## Use
 
+Auto track
+
 ``` javascript
 import Vue from 'vue'
 import VueGtag from 'vue-gtag';
@@ -31,6 +33,9 @@ Vue.use(VueGtag, {
 }, app.router)
 
 ```
+
+Track manually
+
 
 ``` javascript
 export default {
