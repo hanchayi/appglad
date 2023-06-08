@@ -149,3 +149,42 @@ export function getBaseTransformPreset(
   ]
 }
 ```
+
+```typescript
+test('v-if + v-for', () => {
+  const {
+    root,
+    node: { codegenNode }
+  } = parseWithForTransform(`<div v-if="ok" v-for="i in list"/>`)
+  expect(codegenNode).toMatchObject({
+    type: NodeTypes.JS_CONDITIONAL_EXPRESSION,
+    test: { content: `ok` },
+    consequent: {
+      type: NodeTypes.VNODE_CALL,
+      props: createObjectMatcher({
+        key: `[0]`
+      }),
+      isBlock: true,
+      disableTracking: true,
+      patchFlag: genFlagText(PatchFlags.UNKEYED_FRAGMENT),
+      children: {
+        type: NodeTypes.JS_CALL_EXPRESSION,
+        callee: RENDER_LIST,
+        arguments: [
+          { content: `list` },
+          {
+            type: NodeTypes.JS_FUNCTION_EXPRESSION,
+            params: [{ content: `i` }],
+            returns: {
+              type: NodeTypes.VNODE_CALL,
+              tag: `"div"`,
+              isBlock: true
+            }
+          }
+        ]
+      }
+    }
+  })
+  expect(generate(root).code).toMatchSnapshot()
+})
+```

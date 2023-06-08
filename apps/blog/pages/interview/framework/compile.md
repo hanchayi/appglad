@@ -3,6 +3,9 @@ title: vue2-v-model
 description: v-model原理
 ---
 
+## Vue2和Vue3的编译区别
+- 插件化 [Transform](./vue3-compiler-transform.md)
+
 ## Vue2的编译过程
 
 ```mermaid
