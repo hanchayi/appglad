@@ -21,3 +21,7 @@ Click Create Database
 Input Name
 
 ![](create-database-input-name.png)
+
+## View/Edit Data
+
+![](view-edit-data.png)
