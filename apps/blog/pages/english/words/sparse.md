@@ -7,3 +7,8 @@ adj 稀少的，稀疏的
 
 sparse array 稀疏数组
 dense 密集的
+
+
+## Reference
+
+https://www.zmji.net/danci/sparse
