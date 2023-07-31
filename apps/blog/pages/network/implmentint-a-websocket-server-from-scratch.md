@@ -82,7 +82,7 @@ Sec-WebSocket-Version: 13
 - 执行`SHA-1`哈希
 - 执行`base64`编码
 
-
+基本上，为了确保客户端和服务端支持`WebSocket`协议，这是必须的。
 
 
 
