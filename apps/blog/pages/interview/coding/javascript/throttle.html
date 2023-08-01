@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div style="height: 200vh;">
+    <a href="https://github.com/mqyqingfeng/Blog/issues/26">参考</a>
+  </div>
+  <script>
+    function throttle(fn, time) {
+      let timer
+
+      return () => {
+        if (timer) {
+          return
+        }
+        timer = setTimeout(() => {
+          fn()
+          timer = undefined
+        }, time)
+      }
+    }
+
+    document.addEventListener('scroll', throttle(() => {
+      console.log('send event', performance.now())
+    }, 100))
+  </script>
+</body>
+</html>
