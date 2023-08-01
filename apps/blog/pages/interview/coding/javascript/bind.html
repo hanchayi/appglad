@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写bind</title>
+</head>
+<body>
+  <script>
+    Function.prototype.fakeBind = function(caller) {
+      const self = this
+      return function () {
+        self.call(caller, ...arguments)
+      }
+    }
+
+    function f(b) {
+      console.log(this.a, b);
+    }
+
+    //=> 3, 4
+    f.fakeBind({ a: 3 })(4);
+
+    //=> 3, 10
+    f.fakeBind({ a: 3 }, 10)(11);
+
+
+  </script>
+</body>
+</html>
