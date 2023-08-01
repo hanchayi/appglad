@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>如何获取浏览器唯一id</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    function getCanvasFingerPrint() {
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext("2d")
+      ctx.font = "14px Arial"
+      ctx.fillStyle = "#ccc"
+      ctx.fillText("hello", 2, 2)
+      return canvas.toDataURL("image/jpeg")
+    }
+    const fingerprint = getCanvasFingerPrint()
+    console.log(fingerprint)
+  </script>
+</body>
+</html>
