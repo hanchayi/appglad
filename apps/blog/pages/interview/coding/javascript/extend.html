@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>es5继承</title>
+</head>
+<body>
+  <img src="./extend.drawio.svg" alt="">
+  <script>
+    function _new(fun) {
+      let self = {}
+      self.__proto__ = fun.prototype
+      fun.call(self)
+      return self
+    }
+
+    // Object.create以一个现有对象作为原型，创建一个新对象。
+    function create(prototype) {
+      // function F() {}
+      // F.prototype = prototype
+      // return new F()
+
+      let res = {}
+      res.__proto__ = prototype
+      return res
+    }
+
+    function Parent() {}
+    Parent.prototype.a = 1
+
+    function Child() {
+      Parent.call(this) // super
+    }
+
+    Child.prototype = Object.create(Parent.prototype)
+    // Child.prototype.constructor = Child
+    const child = new Child()
+    console.log(child)
+    console.log(child instanceof Child)
+  </script>
+</body>
+</html>
