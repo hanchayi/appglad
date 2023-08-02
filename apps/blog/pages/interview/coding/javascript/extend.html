@@ -33,6 +33,7 @@
       Parent.call(this) // super
     }
 
+    Child.__proto__ = Parent
     Child.prototype = Object.create(Parent.prototype)
     // Child.prototype.constructor = Child
     const child = new Child()
