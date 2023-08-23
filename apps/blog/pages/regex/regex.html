@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script async>
+    // 默认非贪婪匹配，？懒惰模式
+    console.log("<h1>sdf</h1>".match(/<.*?>/g))
+
+    // 取反,字符集
+    console.log("ad1".match(/[^aeiou\d]/g))
+
+    // \w = [a-zA-Z0-9_] 注意有下划线
+    console.log("aA1_".match(/\w+/))
+
+    // \W
+    console.log("a7&%".match(/\W/g))
+
+    // \d
+    console.log("123".match(/\d/g))
+
+    // \D
+    console.log("aq123".match(/\D/g))
+
+   /*  用户名只能是数字字母字符。
+    用户名中的数字必须在最后。 数字可以有零个或多个。 用户名不能以数字开头。
+    用户名字母可以是小写字母和大写字母。
+    用户名长度必须至少为两个字符。 两位用户名只能使用字母。 */
+    const regex = /^[a-z]{2,}|[a-z]{2,}\d|[a-z]+\d{2,}$|/i
+    console.log(regex.test("JACK"))
+    console.log(regex.test("JA"))
+    console.log(regex.test("JA1"))
+    console.log(regex.test("J111"))
+
+    // \s [ \r\t\f\n\v]
+    console.log('\r\t\f\n\v '.match(/\s/g))
+
+    // \S
+    console.log('a\r\t\f\n\v '.match(/\S/g))
+
+    // a?
+    console.log(/favou?rite/.test('favorite'))
+
+    // (?=)(?=) 两个条件同时成立 (a|b)
+
+    // url
+    (/^[a-z]+:\/\/((\w+\.)+[a-z]{2,}|(\d+\.){3}\d+)(\:\d+)?(\/[\w\/]+(\#\/[\w\/]+)?)?/i).test()
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>
