@@ -35,6 +35,7 @@
     // 继承原型
     Child.prototype = Object.create(Parent.prototype)
     Child.prototype.constructor = Child
+    // 静态属性
     Child.__proto__ =  Parent
 
     const child = new Child()
