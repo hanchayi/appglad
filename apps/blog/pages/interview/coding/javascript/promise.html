@@ -7,45 +7,58 @@
 </head>
 <body>
   <script>
-    class MyPromise {
+    const STATE_FULLFILLED = 'fullfilled'
+    const STATE_PENDING = 'pending'
+    const STATE_REJECTED = 'rejected'
+
+    class Promise {
       constructor(fn) {
-        this.run(fn)
-        this.success = []
+        this.state = STATE_PENDING
+        this.onFullfilleds = []
+        this.onRejecteds = []
+
+        const resolve = (value) => {
+          if (this.state === STATE_PENDING) {
+            this.value = value
+            this.state = STATE_FULLFILLED
+            if (this.onFullfilleds.length > 0) {
+              this.onFullfilleds.forEach(fn => fn(this.value))
+            }
+          }
+        }
+
+        const reject = (reason) => {
+          if (this.state === STATE_PENDING) {
+            this.reason = reason
+            this.state = STATE_FULLFILLED
+            if (this.onRejecteds.length > 0) {
+              this.onRejecteds.forEach(fn => fn(this.reason))
+            }
+          }
+        }
+
+        fn(resolve, reject)
       }
-      run(fn) {
-        fn((res) => {
-          this.resolve(res)
-        }, () => {
-          this.reject()
-        })
-      }
-      resolve(res) {
-        this.resolved = res
-        if (this.success.length > 0) {
-          this.success.pop()(this.resolved)
+
+      then(onFullfilled, onRejected) {
+        if (this.state === STATE_FULLFILLED) {
+          onFullfilled(this.value)
+        } else if (this.state === STATE_REJECTED) {
+          onFullfilled(this.reason)
+        } else {
+          this.onFullfilleds.push(onFullfilled)
+          this.onRejecteds.push(onRejected)
         }
       }
-      reject() {}
-      then(cb) {
-        this.success.push(cb)
-      }
-      catch() {}
     }
 
-    new MyPromise((resolve, reject) => {
+    new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(1)
-      })
-    }).then((res) => {
-      console.log(res)
-      return new MyPromise((resolve, reject) => {
-        resolve(2)
-      })
-    }).then(res => {
-      console.log('then2', res)
+      }, 5000)
+    }).then((value) => {
+      console.log(value)
     })
-
-
   </script>
 </body>
 </html>
