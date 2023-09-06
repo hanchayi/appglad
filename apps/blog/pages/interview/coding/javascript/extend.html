@@ -30,12 +30,13 @@
     Parent.prototype.a = 1
 
     function Child() {
-      Parent.call(this) // super
+      Parent.call(this)
     }
-
-    Child.__proto__ = Parent
+    // 继承原型
     Child.prototype = Object.create(Parent.prototype)
-    // Child.prototype.constructor = Child
+    Child.prototype.constructor = Child
+    Child.__proto__ =  Parent
+
     const child = new Child()
     console.log(child)
     console.log(child instanceof Child)
