@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script async>
+    document.addEventListener('DOMContentLoaded', () => {
+      let el = document.getElementById('movable')
+      console.log(el)
+      let left = 0
+      // el.style.position = 'absolute'
+      // el.style.position = 'relative'
+      // el.style.willChange = 'transform'
+
+      const animate = () => {
+        if (!enable) {
+          return
+        }
+        // el.style.left = `${++left}px`
+        // el.style.transform = `translate(${++left}px)`
+        el.style.transform = `translate3d(${++left}px, 0, 0)`
+        requestAnimationFrame(() => {
+          animate()
+        })
+      }
+
+      let enable = false
+
+      document.getElementById('toggle').addEventListener('click', () => {
+        if (!enable) {
+          enable = true
+          animate()
+        } else {
+          enable = false
+        }
+      })
+    })
+  </script>
+</head>
+<body>
+  <div>
+    <div id="movable">movable</div>
+    <button id="toggle">toggle</button>
+    <a href="https://juejin.cn/post/6844904119430283271#heading-0">你真的了解重排和重绘吗？</a>
+  </div>
+</body>
+</html>
