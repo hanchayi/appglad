@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function quicksort(arr) {
+      if (arr.length <= 1) {
+        return arr
+      }
+
+      let mid = arr[0]
+      let small = []
+      let large = []
+      for (let i = 0; i< arr.length; i++) {
+        if (arr[i] > mid) {
+          large.push(arr[i])
+        }
+        if (arr[i] < mid) {
+          small.push(arr[i])
+        }
+      }
+      return [
+        ...quicksort(small),
+        mid,
+        ...quicksort(large)
+      ]
+    }
+
+    console.log(quicksort([2, 3, 4, 1, 6, 5]))
+  </script>
+</head>
+<body>
+  快速排序
+</body>
+</html>
