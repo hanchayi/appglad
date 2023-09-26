@@ -23,6 +23,10 @@
     // weakmap是弱引用
     console.log(weakmap)
 
+    // 为什么vue3使用weakmap
+    // 因为weakmap是弱引用，组件中的响应式对象如果用不到了，应该被内存回收掉
+    // 而vue中存储的那些副作用也应该对应销毁掉
+
   </script>
 </body>
 </html>
