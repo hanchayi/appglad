@@ -8,25 +8,47 @@
 <body>
 
   <script>
-    const map = new WeakMap()
-    let cur
+    const targetMap = new WeakMap()
+    let activeEffect
+
+    function track(t, k) {
+      let keyDeps = targetMap.get(t)
+      if (!keyDeps) {
+        keyDeps = new Map()
+        targetMap.set(t, keyDeps)
+      }
+
+      let deps = keyDeps.get(k)
+      if (!deps) {
+        deps = new Set()
+        keyDeps.set(k, deps)
+      }
+      deps.add(activeEffect)
+    }
+
+    function trigger(t, k, v) {
+      const keyDeps = targetMap.get(t)
+      const deps = keyDeps.get(k)
+      for (let dep of deps) {
+        dep()
+      }
+    }
 
     function reactive(obj) {
       return new Proxy(obj, {
         set(t, k , v) {
           obj[k] = v
-          const cb = map.get(obj)
-          cb()
+          trigger(t, k, v)
         },
         get(t, k) {
-          map.set(obj, cur)
+          track(t, k)
           return t[k]
         }
       })
     }
 
     function effect(cb) {
-      cur = cb
+      activeEffect = cb
       cb()
     }
 
@@ -36,7 +58,12 @@
       console.log('render', data ? data.test : 'no data')
     }
 
+    function render1() {
+      console.log('render1', data ? data.test : 'no data')
+    }
+
     effect(render)
+    effect(render1)
     setTimeout(() => {
       data.test = 2
       data.test = 3
