@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <script>
+    const map = new WeakMap()
+    let cur
+
+    function reactive(obj) {
+      return new Proxy(obj, {
+        set(t, k , v) {
+          obj[k] = v
+          const cb = map.get(obj)
+          cb()
+        },
+        get(t, k) {
+          map.set(obj, cur)
+          return t[k]
+        }
+      })
+    }
+
+    function effect(cb) {
+      cur = cb
+      cb()
+    }
+
+    let data = reactive({ test: 1})
+
+    function render() {
+      console.log('render', data ? data.test : 'no data')
+    }
+
+    effect(render)
+    setTimeout(() => {
+      data.test = 2
+      data.test = 3
+    })
+
+
+
+
+  </script>
+</body>
+</html>
