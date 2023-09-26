@@ -30,7 +30,7 @@
       const keyDeps = targetMap.get(t)
       const deps = keyDeps.get(k)
       for (let dep of deps) {
-        dep()
+        queuePush(dep)
       }
     }
 
@@ -60,6 +60,26 @@
 
     function render1() {
       console.log('render1', data ? data.test : 'no data')
+    }
+
+    const queue = []
+    let run = false
+    function queuePush(cb) {
+      if (!queue.includes(cb)) {
+        queue.push(cb)
+      }
+
+      if (!run) {
+        Promise.resolve().then(() => {
+          console.log('queue', queue)
+          while(queue.length) {
+            const job = queue.shift()
+            job()
+          }
+          run = false
+        })
+        run = true
+      }
     }
 
     effect(render)
