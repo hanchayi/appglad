@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const map = new Map()
+    const weakmap = new WeakMap()
+    function test() {
+      const foo = { a: 1}
+      map.set('a', 1)
+      // weakmap.set('b', 2)
+      weakmap.set(foo, 2)
+      console.log(map.get('a'))
+      console.log(weakmap.get(foo))
+    }
+    test()
+
+    console.log(map)
+    // weakmap是弱引用
+    console.log(weakmap)
+
+  </script>
+</body>
+</html>
