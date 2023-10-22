@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // i j
+    const test = [ 3, 2, 1, 8, 6, 4, 19, 9, 7]
+
+    // 冒泡
+    function bubble() {
+      const items = JSON.parse(JSON.stringify(test))
+      for (let i = 0; i < items.length; i++) {
+        for(let j= 1; j < items.length - i; j++) {
+          if (items[j - 1] > items[j]) {
+            // console.log('swap', items[j - 1], items[j])
+
+            const tmp = items[j - 1]
+            items[j - 1] = items[j]
+            items[j] = tmp
+          }
+        }
+      }
+      console.log(items)
+    }
+    bubble()
+
+    // 选择排序
+    function selection() {
+      const items = JSON.parse(JSON.stringify(test))
+      for (let i = 0; i < items.length; i++) {
+        let index = i
+        let min = items[i]
+        // console.log('set min', items, min)
+        for(let j= i + 1; j < items.length; j++) {
+          if (items[j] < min) {
+            min = items[j]
+            index = j
+            // console.log('set index', j, min)
+          }
+        }
+        // console.log('swap', index, i)
+
+        const tmp = items[i]
+        items[i] = items[index]
+        items[index] = tmp
+      }
+      console.log(items)
+    }
+    selection()
+
+    // 插入排序
+    function insert() {
+      const items = JSON.parse(JSON.stringify(test))
+      for (let i = 1; i < items.length; i++) {
+        let value = items[i]
+        let pos = i
+        while(pos > 0 && items[pos - 1] > value ) {
+          pos--
+        }
+        console.log('swap', pos, i)
+        if (i !== pos) {
+          items.splice(i, 1)
+          items.splice(pos, 0, value)
+        }
+        console.log(JSON.stringify(items))
+      }
+      console.log(items)
+    }
+    insert()
+
+  </script>
+</body>
+</html>
